@@ -1,0 +1,129 @@
+
+#include<iostream>
+#include<fstream>
+#include<string>
+#include<stdlib.h>
+#include<time.h>
+#include <sstream>
+using namespace std;
+string fuhao(int chu)
+{
+	string fu;
+	int num_3;
+	if (chu == 1)
+	{
+		num_3 = (rand() % 100) % 4;
+		if (num_3 == 0) fu = '+';
+		else if (num_3 == 1) fu = '-';
+		else if (num_3 == 2) fu = '*';
+		else fu = '/';
+		return fu;
+	}
+	else
+	{
+		num_3 = (rand() % 20) % 2;
+		if (num_3 == 0) fu = '+';
+		else   fu = '-';
+		return fu;
+	}
+}
+string yunsuan(int chu,int kuohao,int range)
+{
+	
+	int num_1, num_2;
+	int geshu;
+	string str_first, str_second;
+	string all="";
+	int ch1;
+	geshu = (rand()%(8)+2);
+	ofstream fout;
+	for (int i=1;i<=geshu;i++)
+	{
+		num_1 = (rand() % (range)) + 1;
+		str_first = to_string(num_1);
+		num_2 = (rand() % (range)) + 1;
+		str_second = to_string(num_2);
+		if (kuohao == 1)
+		{
+			ch1 = (rand() % (4)) + 1;
+			switch (ch1){
+			case 1:
+			{
+					  if (all == "") { all = str_first + fuhao(chu) + str_second; }
+					  else  {all = str_first + fuhao(chu) + all; }
+			}break;
+			case 2:
+			{
+					  if (all == "") { all = str_second + fuhao(chu) + str_first; }
+					  else { all = all + fuhao(chu) + str_first; }
+			}break;
+			case 3:
+			{
+					  if (all == "") { all = "(" + str_first + fuhao(chu) + str_second + ")"; }
+					  else { all = "(" + str_first + fuhao(chu) + all + ")"; }
+			}break;
+			case 4:
+			{
+					  if (all == ""){ all = "(" + str_second + fuhao(chu) + str_first + ")"; }
+					  else { all = "(" + all + fuhao(chu) + str_first + ")"; }
+			}break;
+			}
+		}
+		else
+		{			
+			ch1 = (rand() % (2)) + 1;
+			switch (ch1){
+			case 1:
+			{
+					  if (all == "") { all = str_first + fuhao(chu) + str_second; }
+					  else  { all = str_first + fuhao(chu) + all; }
+			}break;
+			case 2:
+			{
+					  if (all == "") { all = str_second + fuhao(chu) + str_first; }
+					  else { all = all + fuhao(chu) + str_first; }
+			}break;
+			}
+		}
+	}
+
+	return  all+"=";
+
+}
+void main()
+{
+	int chu, kuohao,range;
+	int count;//设置循环次数
+	int disport;
+	ofstream fl;
+	cout << "有无除法：（1：有，2：无）" << endl;
+	cin >> chu;
+	cout << "是否有括号：（1：有，2：无）" << endl;
+	cin >> kuohao;
+	cout << "请输入数值的范围：" << endl;
+	cout << "1-";
+	cin >> range;
+	cout << "请输入一共有多少个算式：" << endl;
+	cin >> count;
+	cout << "是否输出到文件：(1:是， 2：否)" << endl;
+	cin >> disport;
+	cout << endl;
+	if (disport == 1)
+	{
+		fl.open("test.txt");
+		fl << "道四则运算题如下：" << endl;
+	for (int i = 0; i < count; i++)
+	 {
+		fl<<yunsuan(chu, kuohao,range)<<endl;
+		cout << yunsuan(chu, kuohao, range) << endl;
+	  }
+	fl.close();
+	}
+	else
+	{
+		for (int i = 0; i < count; i++)
+		{
+			cout << yunsuan(chu, kuohao, range) << endl;
+		}
+	}
+}
